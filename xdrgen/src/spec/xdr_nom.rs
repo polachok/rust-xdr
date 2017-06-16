@@ -208,6 +208,7 @@ kw!(kw_float, b"float");
 kw!(kw_hyper, b"hyper");
 kw!(kw_int, b"int");
 kw!(kw_long, b"long");          // special case - part time keyword
+kw!(kw_short, b"short");          // special case - part time keyword
 kw!(kw_opaque, b"opaque");
 kw!(kw_quadruple, b"quadruple");
 kw!(kw_string, b"string");
@@ -505,10 +506,12 @@ named!(type_spec<Type>,
        preceded!(spaces,
                  alt!(chain!(kw_unsigned ~ kw_int, || Type::UInt) |
                       chain!(kw_unsigned ~ kw_long, || Type::UInt) |        // backwards compat with rpcgen
+                      chain!(kw_unsigned ~ kw_short, || Type::UInt) |       // backwards compat with rpcgen
                       chain!(kw_unsigned ~ kw_char, || Type::ident("u8")) | // backwards compat with rpcgen
                       chain!(kw_unsigned ~ kw_hyper, || Type::UHyper) |
                       kw_unsigned => { |_| Type::UInt } |                   // backwards compat with rpcgen
                       kw_long => { |_| Type::Int } |                        // backwards compat with rpcgen
+                      kw_short => { |_| Type::Int } |                       // backwards compat with rpcgen
                       kw_char => { |_| Type::ident("i8") } |                // backwards compat with rpcgen
                       kw_int => { |_| Type::Int } |
                       kw_hyper => { |_| Type::Hyper } |

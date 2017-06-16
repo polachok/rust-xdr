@@ -318,6 +318,20 @@ impl<Out: Write> Pack<Out> for i8 {
     }
 }
 
+impl<Out: Write> Pack<Out> for u16 {
+    #[inline]
+    fn pack(&self, out: &mut Out) -> Result<usize> {
+        out.write_u32::<BigEndian>(*self as u32).map_err(Error::from).map(|_| 4)
+    }
+}
+
+impl<Out: Write> Pack<Out> for i16 {
+    #[inline]
+    fn pack(&self, out: &mut Out) -> Result<usize> {
+        out.write_i32::<BigEndian>(*self as i32).map_err(Error::from).map(|_| 4)
+    }
+}
+
 impl<Out: Write> Pack<Out> for u32 {
     #[inline]
     fn pack(&self, out: &mut Out) -> Result<usize> {
